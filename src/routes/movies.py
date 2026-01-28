@@ -33,7 +33,7 @@ async def get_movies(
     result = await db.execute(query)
     movies = result.scalars().all()
 
-    base_url = "/api/v1/theater/movies/"
+    base_url = "/theater/movies/"
 
     return {
         "movies": movies,
