@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional
 from datetime import date
 
+
 class MovieBaseSchema(BaseModel):
     id: int
     name: str
