@@ -1,10 +1,8 @@
 from contextlib import asynccontextmanager
-
 from fastapi import FastAPI
 
-from database import init_db, close_db
-from routes import movie_router
-
+from database.session import init_db, close_db
+from routes.movies import router as movie_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -12,13 +10,10 @@ async def lifespan(app: FastAPI):
     yield
     await close_db()
 
+app = FastAPI(lifespan=lifespan)
 
-app = FastAPI(
-    title="Movies homework",
-    description="Description of project",
-    lifespan=lifespan
-)
+app.include_router(movie_router, prefix="/api/v1/theater/movies", tags=["Movies"])
 
-api_version_prefix = "/api/v1"
-
-app.include_router(movie_router, prefix=f"{api_version_prefix}/theater", tags=["theater"])
+@app.get("/")
+async def root():
+    return {"message": "Movie API is running"}
